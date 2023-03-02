@@ -10,6 +10,10 @@
       integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD"
       crossorigin="anonymous"
     />
+    <script
+      src="https://kit.fontawesome.com/648f123c3b.js"
+      crossorigin="anonymous"
+    ></script>
   </head>
   <body onload="fetchCategories()">
     <header class="container">
@@ -90,6 +94,76 @@
           <span id="category-name"></span>
         </div>
       </section>
+
+      <!-- options -->
+      <section
+        class="container d-flex justify-content-between"
+        id="news-container"
+      >
+        <div class="d-flex justify-content-center align-items-center">
+          <span class="me-3">Sort By:</span>
+
+          <select
+            class="form-select"
+            id="floatingSelect"
+            aria-label="Floating label select example"
+          >
+            <option selected>Default</option>
+            <option value="1">One</option>
+            <option value="2">Two</option>
+            <option value="3">Three</option>
+          </select>
+        </div>
+
+        <div class="d-flex gap-2">
+          <button class="btn btn-primary">Today's Pick</button>
+          <button class="btn btn-outline-secondary">Trending</button>
+        </div>
+      </section>
+
+      <!-- all news container-->
+      <section id="all-news" class="mb-4"></section>
+      <!-- sorting section -->
+
+      <!-- modal section -->
+
+      <!-- Modal -->
+      <div
+        class="modal fade"
+        id="exampleModal"
+        tabindex="-1"
+        aria-labelledby="exampleModalLabel"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1 class="modal-title fs-5" id="exampleModalLabel">
+                Modal title
+              </h1>
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+            <div class="modal-body" id="modalContent">...</div>
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-secondary"
+                data-bs-dismiss="modal"
+              >
+                Close
+              </button>
+              <button type="button" class="btn btn-primary">
+                Save changes
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
     </main>
     <!-- JS -->
     <script
