@@ -1,3 +1,5 @@
+let fetchItems = [];
+
 const fetchCategories = () => {
   fetch(`https://openapi.programming-hero.com/api/news/categories`)
     .then((res) => res.json())
@@ -19,7 +21,10 @@ const displayCategories = (data) => {
 const categoryNews = (categoryId, categoryName) => {
   fetch(`https://openapi.programming-hero.com/api/news/category/${categoryId}`)
     .then((res) => res.json())
-    .then((data) => displayAll(data.data, categoryName));
+    .then((data) => {
+      fetchItems = data.data;
+      displayAll(data.data, categoryName);
+    });
 };
 
 const displayAll = (data, categoryName) => {
@@ -52,11 +57,13 @@ const displayAll = (data, categoryName) => {
                 }" class="img-fluid rounded-circle me-3" alt="..." height='40' width='40' />
             </div>
             <div>
-                <p class="m-0 p-0">${author.name}</p>
+                <p class="m-0 p-0">${author.name ? author.name : "Nameless"}</p>
                 <p class="m-0 p-0">${author.published_date}</p>
             </div>
          </div>
-         <div class="d-flex align-items-center"><i class="fa-solid fa-eye"></i> <p class="m-0 ms-2 p-0">${total_view}</p></div>
+         <div class="d-flex align-items-center"><i class="fa-solid fa-eye"></i> <p class="m-0 ms-2 p-0">${
+           total_view ? total_view : "No view"
+         }</p></div>
          <div><i class="fa-regular fa-star"></i> </div>
          <div><i onclick="getDetail('${_id}')" type="button"
          data-bs-toggle="modal"
@@ -80,7 +87,8 @@ const getDetail = (news_id) => {
 
 const displayDetail = (newsDetail) => {
   const modalBody = document.getElementById("modalContent");
-  const { image_url, details, title, author, total_view, _id } = newsDetail;
+  const { image_url, details, title, author, total_view, _id, others_info } =
+    newsDetail;
   modalBody.innerHTML = `
   <div class="card mb-3 container my-4">
   <div class="row g-0">
@@ -89,7 +97,9 @@ const displayDetail = (newsDetail) => {
   </div>
   <div class="">
       <div class="card-body">
-      <h5 class="card-title">${title}</h5>
+      <h5 class="card-title">${title} <span class="badge text-bg-danger">${
+    others_info.is_trending ? "Trending" : ""
+  }</span></h5>
       <p class="card-text">
           ${details}
       </p>
@@ -97,28 +107,40 @@ const displayDetail = (newsDetail) => {
       <div class="card-footer border-0 bg-body d-flex justify-content-between">
        <div class="d-flex align-items-center">
        <div>
-              <img style="" src="${author.img}" class="img-fluid rounded-circle me-3" alt="..." height='40' width='40' />
+              <img style="" src="${
+                author.img
+              }" class="img-fluid rounded-circle me-3" alt="..." height='40' width='40' />
           </div>
           <div>
-              <p class="m-0 p-0">${author.name}</p>
+              <p class="m-0 p-0">${author.name ? author.name : "Nameless"}</p>
               <p class="m-0 p-0">${author.published_date}</p>
           </div>
        </div>
-       <div class="d-flex align-items-center"><i class="fa-solid fa-eye"></i> <p class="m-0 ms-2 p-0">${total_view}</p></div>
+       <div class="d-flex align-items-center"><i class="fa-solid fa-eye"></i> <p class="m-0 ms-2 p-0">${
+         total_view ? total_view : "Not Available"
+       }</p></div>
        <div><i class="fa-regular fa-star"></i> </div>
   </div>
-  <div class="modal-footer">
-              <button
-                type="button"
-                class="btn btn-secondary"
-                data-bs-dismiss="modal"
-              >
-                Close
-              </button>
-              </div>
   </div>
 </div>
   `;
+};
+
+const displayToday = (category_name) => {
+  let trendingNews = fetchItems.filter(
+    (singleItem) => singleItem.others_info.is_todays_pick === true
+  );
+  const category = document.getElementById("category-name").innerText;
+  // console.log(trendingNews);
+  displayAll(trendingNews, category);
+};
+
+const displayTrending = () => {
+  const itemsTrending = fetchItems.filter(
+    (singleItem) => singleItem.others_info.is_trending === true
+  );
+  const category = document.getElementById("category-name").innerText;
+  displayAll(itemsTrending, category);
 };
 
 categoryNews();
