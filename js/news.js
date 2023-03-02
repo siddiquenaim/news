@@ -35,7 +35,8 @@ const displayAll = (data, categoryName) => {
   // news container section
   data.forEach((singleNews) => {
     console.log(singleNews);
-    const { image_url, details, title, author, total_view, _id } = singleNews;
+    const { image_url, details, title, author, total_view, _id, rating } =
+      singleNews;
     allNews.innerHTML += `
     <div class="card mb-3 container my-4">
     <div class="row g-0">
@@ -64,7 +65,8 @@ const displayAll = (data, categoryName) => {
          <div class="d-flex align-items-center"><i class="fa-solid fa-eye"></i> <p class="m-0 ms-2 p-0">${
            total_view ? total_view : "No view"
          }</p></div>
-         <div><i class="fa-regular fa-star"></i> </div>
+         <div><i class="fa-regular fa-star"></i> ${rating.number}
+         </div>
          <div><i onclick="getDetail('${_id}')" type="button"
          data-bs-toggle="modal"
          data-bs-target="#exampleModal" class="fa-solid fa-arrow-right"></i></div>        
@@ -126,7 +128,7 @@ const displayDetail = (newsDetail) => {
   `;
 };
 
-const displayToday = (category_name) => {
+const displayToday = () => {
   let trendingNews = fetchItems.filter(
     (singleItem) => singleItem.others_info.is_todays_pick === true
   );
